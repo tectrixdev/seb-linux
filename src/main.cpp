@@ -1,3 +1,4 @@
+#include <iostream>
 #include "app_controller.h"
 #include "security/security_service.h"
 #include "browser/webengine_environment.h"
@@ -315,6 +316,9 @@ void applyCommandLineOverrides(const QCommandLineParser &parser, seb::SebSetting
 
 }  // namespace
 
+const QString version = QString::fromStdString(VERSION);
+const QString packagename = QString::fromStdString(PACKAGE_NAME);
+
 int main(int argc, char *argv[])
 {
     applyEarlyEnvironment(argc, argv);
@@ -323,9 +327,10 @@ int main(int argc, char *argv[])
     
      const QIcon appIcon(QStringLiteral(":/assets/icons/safe-exam-browser.png"));
     app.setWindowIcon(appIcon);
-    app.setDesktopFileName(QStringLiteral("safe-exam-browser"));
+    // TODO: Dynamic package name.
+    app.setDesktopFileName(packagename);
     QCoreApplication::setApplicationName(QStringLiteral("Safe Exam Browser"));
-    QCoreApplication::setApplicationVersion(QStringLiteral("0.1.0"));
+    QCoreApplication::setApplicationVersion(version);
 
     QCommandLineParser parser;
     parser.setApplicationDescription(QStringLiteral(
