@@ -30,6 +30,7 @@ LINUXBUILD_EXTRA_ARGS=(
     -l /usr/lib/x86_64-linux-gnu/libxcb-cursor.so.0
     -l /usr/lib/x86_64-linux-gnu/libxcb-xinput.so.0
 )
+CMAKE_ARGS=("$@")
 echo "Variables set"
 
 GENERATOR_ARGS=()
@@ -98,7 +99,7 @@ build_appimage() {
     mkdir -p "${build_dir}" "${app_dir}" "${appimage_output_dir}"
 
     pushd "${build_dir}" >/dev/null
-    cmake -S "${PROJECT_DIR}" -B "${build_dir}" ${GENERATOR_ARGS[@]+"${GENERATOR_ARGS[@]}"} -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr "${config}"
+    cmake -S "${PROJECT_DIR}" -B "${build_dir}" ${CMAKE_ARGS[@]+"${CMAKE_ARGS[@]}"} ${GENERATOR_ARGS[@]+"${GENERATOR_ARGS[@]}"} -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr "${config}"
     run_logged "${build_dir}/make.log" cmake --build "${build_dir}" -j"$(nproc)"
     run_logged "${build_dir}/make-install.log" env DESTDIR="${app_dir}" cmake --install "${build_dir}"
     popd >/dev/null
